@@ -34,22 +34,6 @@ $api->version('v1', ['middleware' => 'api.auth'], function ($api) {
 
 });
 
-# Handle Kependudukan
-Route::group(['namespace' => 'Kependudukan', 'prefix' => 'api/v1'], function () {
-    // handle keluarga (kk)
-    Route::resource('kependudukan-keluarga', 'KeluargaController');
-
-    // handle pribadi/ individu
-    Route::resource('kependudukan-pribadi', 'PribadiController');
-
-    // handle pribadi rincian
-    Route::resource('kependudukan-pribadi-rincian', 'PribadiRincianController');
-
-    // handle ortu
-    Route::resource('kependudukan-ortu', 'OrtuController');
-
-});
-
 # Handle Buku
 Route::group(['namespace' => 'Buku', 'prefix' => 'api/v1'], function () {
     // buku
@@ -58,8 +42,4 @@ Route::group(['namespace' => 'Buku', 'prefix' => 'api/v1'], function () {
     // penulis
     Route::resource('penulis', 'PenulisController');
 
-});
-
-Route::get('test', function () {
-    return 'test saja';
 });
