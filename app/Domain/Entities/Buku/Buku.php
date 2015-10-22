@@ -38,10 +38,13 @@ class Buku extends Model
      */
     protected $hidden = [
         'created_at',
-        'updated_at'
+        'updated_at',
+        'user_id',
+        'user_creator',
+        'user_updater',
     ];
 
-    protected $with = 'penulis';
+    protected $with = ['penulis', 'penerbit'];
 
     /**
      * Get penulis.
@@ -53,15 +56,16 @@ class Buku extends Model
         return $this->belongsTo('App\Domain\Entities\Buku\Penulis', 'penulis_id');
     }
 
-//    /**
-//     * Get the post's category.
-//     *
-//     * @return Penerbit
-//     */
-//    public function penerbit()
-//    {
-//        return $this->belongsTo('App\Penerbit', 'penerbit_id');
-//    }
+    /**
+     * Get the post's category.
+     *
+     * @return Penerbit
+     */
+    public function penerbit()
+    {
+        return $this->belongsTo('App\Domain\Entities\Buku\Penerbit', 'penerbit_id');
+    }
+
 //    /**
 //     * Get the post's category.
 //     *
@@ -69,11 +73,11 @@ class Buku extends Model
 //     */
 //    public function kategori()
 //    {
-//        return $this->belongsTo('App\Kategori', 'kategori_id');
+//        return $this->belongsTo('App\Domain\Entities\Buku\Kategori', 'kategori_id');
 //    }
 //    public function user()
 //    {
-//        return $this->belongsTo('App\User');
+//        return $this->belongsTo('App\Domain\Entities\User');
 //    }
 
 }

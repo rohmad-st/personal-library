@@ -1,24 +1,24 @@
 <?php namespace App\Http\Controllers\Buku;
 
-use App\Domain\Repositories\Buku\PenulisRepository;
+use App\Domain\Repositories\Buku\PenerbitRepository;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Buku\PenulisFormRequest;
+use App\Http\Requests\Buku\PenerbitFormRequest;
 
-class PenulisController extends Controller
+class PenerbitController extends Controller
 {
     /**
-     * @var PenulisRepository
+     * @var PenerbitRepository
      */
-    protected $penulis;
+    protected $penerbit;
 
     /**
-     * @param PenulisRepository $penulis
+     * @param PenerbitRepository $penerbit
      */
-    public function __construct(PenulisRepository $penulis)
+    public function __construct(PenerbitRepository $penerbit)
     {
-        $this->penulis = $penulis;
+        $this->penerbit = $penerbit;
         $this->middleware('jwt.auth', ['except' => ['index']]);
     }
 
@@ -31,19 +31,19 @@ class PenulisController extends Controller
      */
     public function index(Request $request)
     {
-        return $this->penulis->getByPage(10, $request->input('page'), $column = ['*'], $key = '', $request->input('term'));
+        return $this->penerbit->getByPage(10, $request->input('page'), $column = ['*'], $key = '', $request->input('term'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  PenulisFormRequest $request
+     * @param  PenerbitFormRequest $request
      *
      * @return mixed
      */
-    public function store(PenulisFormRequest $request)
+    public function store(PenerbitFormRequest $request)
     {
-        return $this->penulis->create($request->all());
+        return $this->penerbit->create($request->all());
     }
 
     /**
@@ -55,20 +55,20 @@ class PenulisController extends Controller
      */
     public function show($id)
     {
-        return $this->penulis->find($id);
+        return $this->penerbit->find($id);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  PenulisFormRequest $request
-     * @param  int                $id
+     * @param  PenerbitFormRequest $request
+     * @param  int                 $id
      *
      * @return mixed
      */
-    public function update(PenulisFormRequest $request, $id)
+    public function update(PenerbitFormRequest $request, $id)
     {
-        return $this->penulis->update($id, $request->all());
+        return $this->penerbit->update($id, $request->all());
     }
 
     /**
@@ -80,6 +80,6 @@ class PenulisController extends Controller
      */
     public function destroy($id)
     {
-        return $this->penulis->delete($id);
+        return $this->penerbit->delete($id);
     }
 }

@@ -29,7 +29,7 @@ class BukuFormRequest extends Request
     public function rules()
     {
         return [
-            'judul'        => 'required|max:50',
+            'judul'        => 'required|max:50|unique:buku,judul',
             'uraian'       => 'max:225',
             'tahun'        => 'integer|digits_between:2,4',
             'tanggal_beli' => 'max:10',

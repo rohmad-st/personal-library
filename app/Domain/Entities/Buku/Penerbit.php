@@ -2,22 +2,23 @@
 
 use Illuminate\Database\Eloquent\Model;
 
-class Penulis extends Model
+class Penerbit extends Model
 {
     /**
      * @var string
      */
-    protected $table = 'penulis';
+    protected $table = 'penerbit';
 
     /**
      * @var array
      */
     protected $fillable = [
         'nama',
-        'tempat_lahir',
-        'tanggal_lahir',
         'alamat',
-        'profil',
+        'visi',
+        'misi',
+        'tahun',
+        'jumlah_buku',
     ];
 
     protected $primaryKey = '_id';

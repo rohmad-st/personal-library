@@ -19,7 +19,7 @@ class BukuController extends Controller
     public function __construct(BukuRepository $buku)
     {
         $this->buku = $buku;
-        // $this->middleware('auth');
+        $this->middleware('jwt.auth', ['except' => ['index']]);
     }
 
     /**

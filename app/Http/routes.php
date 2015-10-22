@@ -16,7 +16,6 @@ Route::get('/', 'AngularController@serveApp');
 Route::get('/unsupported-browser', 'AngularController@unsupported');
 
 $api = app('Dingo\Api\Routing\Router');
-
 $api->version('v1', function ($api) {
     /*
      * used for Json Web Token Authentication - https://scotch.io/tutorials/token-based-authentication-for-angularjs-and-laravel-apps
@@ -24,22 +23,21 @@ $api->version('v1', function ($api) {
      */
     $api->controller('authenticate', 'App\Http\Controllers\AuthenticateController');
 
-    $api->get('test', 'App\Http\Controllers\WelcomeController@getSample');
 });
 
-//protected with JWT
-$api->version('v1', ['middleware' => 'api.auth'], function ($api) {
-
-    $api->post('test/sample', 'App\Http\Controllers\WelcomeController@sample');
-
+# Authenticate using Json Web Token (JWT)
+Route::group(['prefix' => 'api/v1'], function () {
+    Route::post('authenticate', 'AuthenticateController@postAuth');
 });
 
-# Handle Buku
+# Handle Group Books
 Route::group(['namespace' => 'Buku', 'prefix' => 'api/v1'], function () {
-    // buku
+    // books
     Route::resource('buku', 'BukuController');
 
-    // penulis
+    // authors
     Route::resource('penulis', 'PenulisController');
 
+    // publishers
+    Route::resource('penerbit', 'PenerbitController');
 });
