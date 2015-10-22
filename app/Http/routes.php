@@ -34,6 +34,10 @@ Route::group(['prefix' => 'api/v1/auth'], function () {
 
     // logout
     Route::get('logout', 'AuthenticateController@deleteAuth');
+
+    // get current token
+    Route::get('get-token', 'AuthenticateController@getToken');
+
 });
 
 # Handle Group Books
@@ -47,3 +51,4 @@ Route::group(['namespace' => 'Buku', 'prefix' => 'api/v1'], function () {
     // publishers
     Route::resource('penerbit', 'PenerbitController');
 });
+
