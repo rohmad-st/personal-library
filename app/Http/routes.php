@@ -48,5 +48,8 @@ Route::group(['namespace' => 'Buku', 'prefix' => 'api/v1'], function () {
 
     // publishers
     Route::resource('penerbit', 'PenerbitController');
+
+    // categories
+    Route::resource('kategori', 'KategoriController');
 });
 
