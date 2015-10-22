@@ -82,7 +82,7 @@ class AuthenticateController extends Controller
                     'success'  => false,
                     'messages' => [
                         'status' => 'user_not_found',
-                        'msg'    => 'User tidak ditemukan, silahkan daftar atau login dengan akun yang benar.',
+                        'msg'    => 'User tidak ditemukan, silahkan daftar atau login dengan akun yang valid.',
                     ]
                 ];
 
@@ -128,7 +128,7 @@ class AuthenticateController extends Controller
 
         $message = [
             'success' => true,
-            'user'    => compact('user')['user'],
+            'user'    => $user //compact('user')['user'],
         ];
 
         return response()->json($message);
