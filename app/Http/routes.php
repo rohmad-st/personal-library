@@ -26,8 +26,14 @@ $api->version('v1', function ($api) {
 });
 
 # Authenticate using Json Web Token (JWT)
-Route::group(['prefix' => 'api/v1'], function () {
-    Route::post('authenticate', 'AuthenticateController@postAuth');
+Route::group(['prefix' => 'api/v1/auth'], function () {
+    Route::post('login', 'AuthenticateController@postAuth');
+
+    // login
+    Route::get('info-login', 'AuthenticateController@getAuth');
+
+    // logout
+    Route::get('logout', 'AuthenticateController@deleteAuth');
 });
 
 # Handle Group Books

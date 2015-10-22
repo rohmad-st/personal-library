@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Http\Controllers;
+<?php namespace App\Http\Controllers;
 
 use Dingo\Api\Http\Request;
 use Dingo\Api\Exception\ValidationHttpException;
