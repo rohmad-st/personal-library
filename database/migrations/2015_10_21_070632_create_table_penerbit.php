@@ -15,7 +15,6 @@ class CreateTablePenerbit extends Migration
         Schema::create('penerbit', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('_id');
-            // $table->string('_id');
             $table->string('nama');
             $table->string('alamat')->nullable();
             $table->string('visi')->nullable();
@@ -28,9 +27,7 @@ class CreateTablePenerbit extends Migration
             $table->string('user_id');
             $table->string('user_creator')->nullable()->default(null);
             $table->string('user_updater')->nullable()->default(null);
-            // $table->primary('_id');
             $table->timestamps();
-            // $table->softDeletes();
         });
     }
 

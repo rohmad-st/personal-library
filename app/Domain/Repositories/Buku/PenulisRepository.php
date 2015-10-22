@@ -3,9 +3,7 @@
 use App\Domain\Contracts\Cacheable;
 use App\Domain\Contracts\Crudable;
 use App\Domain\Contracts\Paginable;
-use App\Domain\Entities\Buku\Buku;
 use App\Domain\Entities\Buku\Penulis;
-use App\Domain\Entities\Kependudukan\Keluarga;
 use App\Domain\Repositories\AbstractRepository;
 use Illuminate\Support\Facades\Log;
 
