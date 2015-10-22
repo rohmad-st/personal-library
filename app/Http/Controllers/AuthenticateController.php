@@ -13,7 +13,7 @@ class AuthenticateController extends Controller
 
     public function __construct()
     {
-        $this->middleware('jwt.auth', ['except' => ['postAuth', 'getToken']]);
+        $this->middleware('jwt.auth', ['except' => ['postAuth']]);
     }
 
     /**
@@ -153,17 +153,5 @@ class AuthenticateController extends Controller
         ];
 
         return response()->json($result);
-    }
-
-    /**
-     * Show Current Json Web Token
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function getToken()
-    {
-        $token = Redis::get('_token');
-
-        return response()->json($token);
     }
 }

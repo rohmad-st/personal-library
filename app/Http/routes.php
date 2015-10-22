@@ -27,16 +27,14 @@ $api->version('v1', function ($api) {
 
 # Authenticate using Json Web Token (JWT)
 Route::group(['prefix' => 'api/v1/auth'], function () {
+    // login
     Route::post('login', 'AuthenticateController@postAuth');
 
-    // login
+    // info current user login
     Route::get('info-login', 'AuthenticateController@getAuth');
 
     // logout
     Route::get('logout', 'AuthenticateController@deleteAuth');
-
-    // get current token
-    Route::get('get-token', 'AuthenticateController@getToken');
 
 });
 
