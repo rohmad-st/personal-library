@@ -1,5 +1,6 @@
 <?php namespace App\Http\Controllers;
 
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Session;
@@ -14,6 +15,13 @@ class AuthenticateController extends Controller
     public function __construct()
     {
         $this->middleware('jwt.auth', ['except' => ['postAuth']]);
+    }
+
+    public function index()
+    {
+        $user = User::all();
+
+        return $user;
     }
 
     /**
@@ -34,7 +42,7 @@ class AuthenticateController extends Controller
                     'success'  => false,
                     'messages' => [
                         'status' => 'invalid_credentials',
-                        'msg'    => 'Gagal login. Silahkan ulangi login.',
+                        'msg'    => 'Email atau Password salah. Silahkan register atau ulangi login.',
                     ]
                 ];
 
@@ -47,7 +55,7 @@ class AuthenticateController extends Controller
                 'success'  => false,
                 'messages' => [
                     'status' => 'could_not_create_token',
-                    'msg'    => 'Gagal login. Silahkan ulangi login.',
+                    'msg'    => 'Terjadi kesalahan. Silahkan ulangi login.',
                 ]
             ];
 
