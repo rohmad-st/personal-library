@@ -1,9 +1,7 @@
 <?php namespace App\Http\Controllers;
 
-use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redis;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
@@ -14,14 +12,7 @@ class AuthenticateController extends Controller
 
     public function __construct()
     {
-        $this->middleware('jwt.auth', ['except' => ['postAuth']]);
-    }
-
-    public function index()
-    {
-        $user = User::all();
-
-        return $user;
+        $this->middleware('jwt.auth', ['except' => ['postAuth', 'getAuth']]);
     }
 
     /**
@@ -62,12 +53,6 @@ class AuthenticateController extends Controller
             return response()->json($message, 500);
         }
 
-        // result token
-        // $token = compact('token')['token'];
-
-        // save token to session
-        Redis::set('_token', $token);
-
         // set message response
         $message = [
             'success' => true,
@@ -90,7 +75,7 @@ class AuthenticateController extends Controller
                     'success'  => false,
                     'messages' => [
                         'status' => 'user_not_found',
-                        'msg'    => 'User tidak ditemukan, silahkan daftar atau login dengan akun yang valid.',
+                        'msg'    => 'User tidak ditemukan, silahkan Daftar atau Login dengan Akun yang valid.',
                     ]
                 ];
 
@@ -102,41 +87,38 @@ class AuthenticateController extends Controller
                 'success'  => false,
                 'messages' => [
                     'status' => 'token_expired',
-                    'msg'    => 'Token sudah habis, silahkan login lagi.',
-                    'code'   => $e->getStatusCode(),
+                    'msg'    => 'Kode Akses sudah habis, silahkan login lagi.',
                 ]
             ];
 
-            return response()->json($message);
+            return response()->json($message, $e->getStatusCode());
 
         } catch (TokenInvalidException $e) {
             $message = [
                 'success'  => false,
                 'messages' => [
                     'status' => 'token_invalid',
-                    'msg'    => 'Token tidak valid, silahkan mengulangi login Anda.',
-                    'code'   => $e->getStatusCode(),
+                    'msg'    => 'Akses tidak valid, silahkan mengulangi login Anda.'
                 ]
             ];
 
-            return response()->json($message);
+            return response()->json($message, $e->getStatusCode());
 
         } catch (JWTException $e) {
             $message = [
                 'success'  => false,
                 'messages' => [
                     'status' => 'token_absent',
-                    'msg'    => 'Token kosong, silahkan mengulangi login Anda.',
-                    'code'   => $e->getStatusCode(),
+                    'msg'    => 'Silahkan masukkan Kode Akses/Token yang valid.',
                 ]
             ];
 
-            return response()->json($message);
+            return response()->json($message, $e->getStatusCode());
         }
 
         $message = [
             'success' => true,
-            'user'    => $user //compact('user')['user'],
+            'user'    => Auth::user()
         ];
 
         return response()->json($message);
@@ -144,7 +126,7 @@ class AuthenticateController extends Controller
     }
 
     /**
-     * Logout or delete JWT
+     * Logout or delete current JWT
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -153,11 +135,9 @@ class AuthenticateController extends Controller
         // Delete token
         JWTAuth::parseToken()->invalidate();
 
-        Session::flush();
-
         $result = [
             'success' => true,
-            'message' => 'Berhasil logout'
+            'message' => 'Berhasil logout.'
         ];
 
         return response()->json($result);

@@ -20,6 +20,7 @@ $api = app('Dingo\Api\Routing\Router');
 # Handle authenticate
 $api->version('v1', function ($api) {
     $api->group(['namespace' => 'App\Http\Controllers', 'prefix' => 'auth'], function ($api) {
+
         // login
         $api->post('login', 'AuthenticateController@postAuth');
 
