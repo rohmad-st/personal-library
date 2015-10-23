@@ -16,40 +16,32 @@ Route::get('/', 'AngularController@serveApp');
 Route::get('/unsupported-browser', 'AngularController@unsupported');
 
 $api = app('Dingo\Api\Routing\Router');
+
+# Handle authenticate
 $api->version('v1', function ($api) {
-    /*
-     * used for Json Web Token Authentication - https://scotch.io/tutorials/token-based-authentication-for-angularjs-and-laravel-apps
-     * Make sure to re-enable CSRF middleware if you're disabling JWT
-     */
-    $api->controller('authenticate', 'App\Http\Controllers\AuthenticateController');
+    $api->group(['namespace' => 'App\Http\Controllers', 'prefix' => 'auth'], function ($api) {
+        // login
+        $api->post('login', 'AuthenticateController@postAuth');
 
+        // info current user login
+        $api->get('info-login', 'AuthenticateController@getAuth');
+
+        // logout
+        $api->get('logout', 'AuthenticateController@deleteAuth');
+    });
 });
 
-# Authenticate using Json Web Token (JWT)
-Route::group(['prefix' => 'api/v1/auth'], function () {
-    // login
-    Route::post('login', 'AuthenticateController@postAuth');
-
-    // info current user login
-    Route::get('info-login', 'AuthenticateController@getAuth');
-
-    // logout
-    Route::get('logout', 'AuthenticateController@deleteAuth');
-
-});
-
-# Handle Group Books
-Route::group(['namespace' => 'Buku', 'prefix' => 'api/v1'], function () {
-    // books
-    Route::resource('buku', 'BukuController');
-
-    // authors
-    Route::resource('penulis', 'PenulisController');
-
-    // publishers
-    Route::resource('penerbit', 'PenerbitController');
-
-    // categories
-    Route::resource('kategori', 'KategoriController');
+# Handle books
+$api->version('v1', function ($api) {
+    $api->group(['namespace' => 'App\Http\Controllers\Buku'], function ($api) {
+        // books
+        $api->resource('buku', 'BukuController');
+        // authors
+        $api->resource('penulis', 'PenulisController');
+        // publishers
+        $api->resource('penerbit', 'PenerbitController');
+        // categories
+        $api->resource('kategori', 'KategoriController');
+    });
 });
 
