@@ -19,7 +19,7 @@ class BukuController extends Controller
     public function __construct(BukuRepository $buku)
     {
         $this->buku = $buku;
-        $this->middleware('jwt.auth', ['except' => ['index']]);
+        $this->middleware('jwt.auth', ['except' => ['index', 'testData']]);
     }
 
     /**
@@ -81,5 +81,25 @@ class BukuController extends Controller
     public function destroy($id)
     {
         return $this->buku->delete($id);
+    }
+
+    public function testData()
+    {
+        $result = [
+            [
+                'id'   => 1,
+                'nama' => 'rohmat'
+            ],
+            [
+                'id'   => 2,
+                'nama' => 'rendy'
+            ],
+            [
+                'id'   => 3,
+                'nama' => 'santoso'
+            ],
+        ];
+
+        return $result;
     }
 }

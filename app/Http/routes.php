@@ -17,6 +17,17 @@ Route::get('/unsupported-browser', 'AngularController@unsupported');
 
 $api = app('Dingo\Api\Routing\Router');
 
+$api->version('v1', function ($api) {
+    /*
+     * used for Json Web Token Authentication - https://scotch.io/tutorials/token-based-authentication-for-angularjs-and-laravel-apps
+     * Make sure to re-enable CSRF middleware if you're disabling JWT
+     */
+    $api->controller('authenticate', 'App\Http\Controllers\AuthenticateController');
+
+    $api->get('test', 'App\Http\Controllers\WelcomeController@getSample');
+});
+
+
 # Handle authenticate
 $api->version('v1', function ($api) {
     $api->group(['namespace' => 'App\Http\Controllers', 'prefix' => 'auth'], function ($api) {
@@ -34,7 +45,7 @@ $api->version('v1', function ($api) {
 
 # Handle books
 $api->version('v1', function ($api) {
-    $api->group(['namespace' => 'App\Http\Controllers\Buku'], function ($api) {
+    $api->group(['namespace' => 'App\Http\Controllers\Buku', 'prefix' => 'v1'], function ($api) {
         // books
         $api->resource('buku', 'BukuController');
         // authors
@@ -43,6 +54,8 @@ $api->version('v1', function ($api) {
         $api->resource('penerbit', 'PenerbitController');
         // categories
         $api->resource('kategori', 'KategoriController');
+
+        $api->get('test-data', 'BukuController@testData');
     });
 });
 

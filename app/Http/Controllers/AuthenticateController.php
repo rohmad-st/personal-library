@@ -1,6 +1,6 @@
 <?php namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\Auth\LoginFormRequest;
 use Illuminate\Support\Facades\Auth;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
@@ -18,11 +18,11 @@ class AuthenticateController extends Controller
     /**
      * Authenticate Post login
      *
-     * @param Request $request
+     * @param LoginFormRequest $request
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function postAuth(Request $request)
+    public function postAuth(LoginFormRequest $request)
     {
         $credentials = $request->only('email', 'password');
 
@@ -31,35 +31,42 @@ class AuthenticateController extends Controller
             if (!$token = JWTAuth::attempt($credentials)) {
                 $message = [
                     'success'  => false,
+                    'code'     => 401,
                     'messages' => [
                         'status' => 'invalid_credentials',
                         'msg'    => 'Email atau Password salah. Silahkan register atau ulangi login.',
                     ]
                 ];
 
-                return response()->json($message, 401);
+                return $message;
+                //return response()->json($message, 401);
             }
 
         } catch (JWTException $e) {
             // something went wrong
             $message = [
                 'success'  => false,
+                'code'     => 500,
                 'messages' => [
                     'status' => 'could_not_create_token',
                     'msg'    => 'Terjadi kesalahan. Silahkan ulangi login.',
                 ]
             ];
 
-            return response()->json($message, 500);
+            return $message;
         }
 
         // set message response
         $message = [
-            'success' => true,
-            'token'   => $token
+            'success'  => true,
+            'messages' => [
+                'token' => $token,
+                'msg'   => 'Berhasil login.',
+            ]
         ];
 
-        return response()->json($message);
+        return $message;
+        //return response()->json($message);
     }
 
     /**
